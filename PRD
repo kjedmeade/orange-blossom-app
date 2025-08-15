@@ -1,0 +1,318 @@
+### General PRD generated from ChatGPT
+
+Orange Blossom — Product Requirements Document (PRD)
+
+A minimalist self‑care idea sharing platform built with Next.js and Supabase.
+
+1) Overview
+
+Elevator pitch: Orange Blossom lets people upload, browse, and save bite‑sized self‑care ideas. It’s simple, fast, and friendly: a scrollable feed of actionable ideas with optional photos, tags (e.g., Relaxing, Creative, Financial), and time estimates.
+
+Primary goal (V1): Enable users to publish self‑care ideas and let others discover, filter, like, and bookmark them.
+
+Secondary goals: Lightweight profiles, search by tags/moods/time, moderation tools, and a clean mobile‑first UI.
+
+Out of scope (V1): Long‑form articles, complex social graph (follows), push notifications, payments/marketplace, multi‑language translations.
+
+2) Target users & Personas
+
+Busy Starter: Wants simple self‑care ideas that fit into 5–15 min pockets.
+
+Curator: Loves categorizing, tagging, and sharing polished ideas with images.
+
+Browser: Scrolls trending/new; saves/likes; rarely posts.
+
+Builder/Coach (later): Power user who posts often and wants analytics.
+
+3) Core User Stories (V1)
+
+As a visitor, I can browse public ideas without signing in.
+
+As a user, I can sign up/sign in with Supabase Auth (email magic link + OAuth).
+
+As a signed‑in user, I can create an idea with title, description, optional photo(s), tags, and time estimate.
+
+As a user, I can edit or delete my own ideas.
+
+As a user, I can like and bookmark ideas.
+
+As a user, I can filter ideas by tag, mood, and time; and search by keyword.
+
+As a user, I can view a profile page (mine or others) showing ideas and bio.
+
+As a moderator/admin, I can review reports and hide/remove content.
+
+Nice‑to‑have (V1.1+)
+
+Comments and replies
+
+Basic following (feed of creators I like)
+
+Collections (user‑curated sets)
+
+4) Information Architecture
+
+Public
+
+Home (/): Latest + Trending feeds, tag filter, quick search
+
+Idea details (/ideas/[slug])
+
+Tag pages (/tags/[tag])
+
+Profiles (/u/[username])
+
+Authenticated
+
+Upload (/upload)
+
+Edit idea (/ideas/[id]/edit)
+
+Bookmarks (/me/bookmarks)
+
+Settings (/settings)
+
+Admin/Moderation
+
+Queue (/admin/moderation)
+
+5) Success Metrics (post‑launch)
+
+Engagement: % of visitors who like or bookmark ≥1 idea; avg ideas viewed/session.
+
+Creation: New ideas/day; % of signed‑in users posting per week.
+
+Quality: Like rate per idea; report rate < 1% of views.
+
+Reliability: p95 page TTFB < 400ms; errors < 0.5% of requests.
+
+6) Non‑functional Requirements
+
+Performance: Mobile‑first, Core Web Vitals green; image optimization.
+
+Security: RLS everywhere; least‑privilege; media stored privately with signed URLs.
+
+Accessibility: WCAG AA; keyboard‑navigable; alt text required for images.
+
+Privacy: Public by default for published ideas; private drafts never publicly readable.
+
+Scalability: Feed and search with efficient indexes + pagination.
+
+7) Tech Stack
+
+Frontend: Next.js (App Router, React Server Components), TypeScript, Tailwind CSS, shadcn/ui.
+
+State/data: Supabase JS client (SSR + client); SWR for client cache; Zod for validation.
+
+Backend: Supabase Postgres + Auth; RLS policies; Supabase Storage; optional Edge Functions for moderation & fan‑out.
+
+Search: Postgres full‑text search (generated tsvector + GIN index).
+
+Analytics/Observability: Vercel Analytics (or Plausible), Sentry (errors), Logflare (optional).
+
+Testing: Vitest (unit), Playwright (e2e), Testing Library (components).
+
+CI/CD: GitHub + Vercel; Supabase migrations via CLI.
+
+8) Data Model (Supabase)
+
+8.1 Tables
+
+-- Enable extensions
+create extension if not exists pg_trgm;
+create extension if not exists unaccent;
+
+-- Users are in auth.users; mirror profile info
+create table public.profiles (
+  id uuid primary key references auth.users(id) on delete cascade,
+  username citext unique not null,
+  display_name text,
+  avatar_url text,
+  bio text,
+  created_at timestamptz default now(),
+  updated_at timestamptz default now()
+);
+
+create type public.privacy_level as enum ('public','unlisted','private');
+
+create table public.ideas (
+  id uuid primary key default gen_random_uuid(),
+  author_id uuid not null references public.profiles(id) on delete cascade,
+  title text not null,
+  description text not null,
+  duration_min int check (duration_min between 1 and 240),
+  privacy privacy_level default 'public' not null,
+  is_published boolean default true not null,
+  slug text generated always as (
+    lower(regexp_replace(title, '[^a-zA-Z0-9]+', '-', 'g'))
+  ) stored,
+  like_count int default 0,
+  bookmark_count int default 0,
+  report_count int default 0,
+  created_at timestamptz default now(),
+  updated_at timestamptz default now(),
+  fts tsvector
+);
+
+create table public.idea_media (
+  id uuid primary key default gen_random_uuid(),
+  idea_id uuid not null references public.ideas(id) on delete cascade,
+  storage_path text not null,
+  mime_type text,
+  width int,
+  height int,
+  created_at timestamptz default now()
+);
+
+create table public.tags (
+  id bigserial primary key,
+  name citext unique not null,
+  category text
+);
+
+create table public.idea_tags (
+  idea_id uuid references public.ideas(id) on delete cascade,
+  tag_id bigint references public.tags(id) on delete cascade,
+  primary key (idea_id, tag_id)
+);
+
+create table public.likes (
+  user_id uuid references public.profiles(id) on delete cascade,
+  idea_id uuid references public.ideas(id) on delete cascade,
+  created_at timestamptz default now(),
+  primary key (user_id, idea_id)
+);
+
+create table public.bookmarks (
+  user_id uuid references public.profiles(id) on delete cascade,
+  idea_id uuid references public.ideas(id) on delete cascade,
+  created_at timestamptz default now(),
+  primary key (user_id, idea_id)
+);
+
+create table public.comments (
+  id uuid primary key default gen_random_uuid(),
+  idea_id uuid not null references public.ideas(id) on delete cascade,
+  user_id uuid not null references public.profiles(id) on delete cascade,
+  body text not null,
+  parent_id uuid references public.comments(id) on delete set null,
+  is_deleted boolean default false,
+  created_at timestamptz default now(),
+  updated_at timestamptz default now()
+);
+
+create table public.reports (
+  id uuid primary key default gen_random_uuid(),
+  idea_id uuid references public.ideas(id) on delete cascade,
+  comment_id uuid references public.comments(id) on delete cascade,
+  reporter_id uuid not null references public.profiles(id) on delete cascade,
+  reason text not null,
+  status text not null default 'open',
+  created_at timestamptz default now()
+);
+
+8.2 Indexes & Search
+
+-- Search indexes
+create index ideas_fts_idx on public.ideas using gin(fts);
+create index ideas_created_idx on public.ideas (created_at desc);
+create index ideas_trending_idx on public.ideas (like_count desc, bookmark_count desc);
+
+-- FTS trigger to keep tsvector updated
+create function public.ideas_fts_trigger() returns trigger as $$
+begin
+  new.fts := to_tsvector('simple', unaccent(coalesce(new.title,'') || ' ' || coalesce(new.description,'')));
+  return new;
+end
+$$ language plpgsql;
+
+create trigger ideas_fts_tg before insert or update on public.ideas
+for each row execute function public.ideas_fts_trigger();
+
+8.3 Row Level Security (RLS)
+
+alter table public.profiles enable row level security;
+alter table public.ideas enable row level security;
+alter table public.idea_media enable row level security;
+alter table public.likes enable row level security;
+alter table public.bookmarks enable row level security;
+alter table public.comments enable row level security;
+alter table public.reports enable row level security;
+
+-- Profiles
+create policy "Public read profiles" on public.profiles
+for select using (true);
+create policy "Users manage own profile" on public.profiles
+for all using (auth.uid() = id) with check (auth.uid() = id);
+
+-- Ideas
+create policy "Read public or own ideas" on public.ideas
+for select using (
+  (privacy = 'public' and is_published = true) or (author_id = auth.uid())
+);
+create policy "Insert own ideas" on public.ideas
+for insert with check (author_id = auth.uid());
+create policy "Update/Delete own ideas" on public.ideas
+for update using (author_id = auth.uid()) with check (author_id = auth.uid());
+create policy "Delete own ideas" on public.ideas
+for delete using (author_id = auth.uid());
+
+-- Media (paths are private; enforce via owner join)
+create policy "Read media of public ideas or own" on public.idea_media
+for select using (
+  exists (
+    select 1 from public.ideas i
+    where i.id = idea_media.idea_id
+      and ((i.privacy = 'public' and i.is_published = true) or i.author_id = auth.uid())
+  )
+);
+create policy "Insert media for own ideas" on public.idea_media
+for insert with check (
+  exists (
+    select 1 from public.ideas i where i.id = idea_media.idea_id and i.author_id = auth.uid()
+  )
+);
+create policy "Delete media for own ideas" on public.idea_media
+for delete using (
+  exists (
+    select 1 from public.ideas i where i.id = idea_media.idea_id and i.author_id = auth.uid()
+  )
+);
+
+-- Likes/Bookmarks
+create policy "Users manage own likes" on public.likes
+for all using (auth.uid() = user_id) with check (auth.uid() = user_id);
+create policy "Users manage own bookmarks" on public.bookmarks
+for all using (auth.uid() = user_id) with check (auth.uid() = user_id);
+
+-- Comments
+create policy "Read comments of public idea or own" on public.comments
+for select using (
+  exists (
+    select 1 from public.ideas i
+    where i.id = comments.idea_id
+      and ((i.privacy = 'public' and i.is_published = true) or i.author_id = auth.uid())
+  )
+);
+create policy "Insert comment when authed" on public.comments
+for insert with check (auth.uid() = user_id);
+create policy "Update/Delete own comment" on public.comments
+for all using (auth.uid() = user_id) with check (auth.uid() = user_id);
+
+-- Reports (any authed user may file; only admins resolve via service key)
+create policy "Insert reports when authed" on public.reports
+for insert with check (auth.uid() = reporter_id);
+create policy "Read own reports" on public.reports
+for select using (auth.uid() = reporter_id);
+
+8.4 Storage
+
+Bucket: idea-media (private)
+
+Upload via signed upload URLs from server action or Route Handler.
+
+Display via short‑lived signed URLs; regenerate on server.
+
+9) API & Interactions
+
+Prefer server components, server actions, and direct Supabase queries with RLS. Us
