@@ -1,3 +1,30 @@
+## Orange Blossom App
+
+This app is a self care idea sharing platform where users perform CRUD operations over self care ideas that they have added to the platform. They can also view self care ideas that other have added to the platform. Followed along with sections of this course to create the app: https://www.udemy.com/course/the-complete-ai-coding-course-2025-cursor-ai-v0-vercel/?srsltid=AfmBOoo2zhdsWWBAB1rlPLflHKDBtasMoRGQbljq_bzo8PiUKFuptzaS
+
+See PRD file for more general details
+
+### Tech Stack:
+* Supabase
+* NextJs
+* Github Copilot
+* ChatGPT (PRD)
+* Vercel (Deployment)
+
+
+<img width="1143" height="610" alt="Screen Shot 2025-08-15 at 12 13 53 PM" src="https://github.com/user-attachments/assets/66f6e119-0e41-4267-9f3c-95149ed991c3" />
+
+<img width="500" height="435" alt="Screen Shot 2025-08-15 at 12 14 38 PM" src="https://github.com/user-attachments/assets/cc23d07e-3a7d-4c09-8cb1-59eee08ac4cb" />
+
+<img width="654" height="582" alt="Screen Shot 2025-08-15 at 12 15 08 PM" src="https://github.com/user-attachments/assets/d56476d9-b48e-4fcf-aefb-0b0f24d7f495" />
+
+<img width="728" height="375" alt="Screen Shot 2025-08-15 at 12 15 21 PM" src="https://github.com/user-attachments/assets/ddb5b3b3-9b6e-4989-816e-9cf0165554ca" />
+
+<img width="668" height="529" alt="Screen Shot 2025-08-15 at 12 15 29 PM" src="https://github.com/user-attachments/assets/e67c5f3d-40ca-48eb-9e83-12a3bc588058" />
+
+<img width="618" height="608" alt="Screen Shot 2025-08-15 at 12 15 52 PM" src="https://github.com/user-attachments/assets/4f9dc856-c749-43bd-97cb-7ec51091727a" />
+
+  
 This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
 
 ## Getting Started
