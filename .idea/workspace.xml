@@ -5,15 +5,21 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="525b0975-8e77-4fbb-8b3f-bb0ce54c947e" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/app/dashboard/page.tsx" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/app/login/page.tsx" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/app/signup/page.tsx" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/app/utils/ensureProfile.ts" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/app/utils/supabaseClient.ts" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/supabase.sql" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/copilotDiffState.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/copilotDiffState.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/components/Skeleton.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/app/components/Skeleton.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/dashboard/add/page.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/app/dashboard/add/page.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/dashboard/page.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/app/dashboard/page.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/ideas/[id]/edit/page.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/app/ideas/[id]/edit/page.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/ideas/[id]/page.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/app/ideas/[id]/page.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/login/page.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/app/login/page.tsx" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/app/page.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/app/page.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/package-lock.json" beforeDir="false" afterPath="$PROJECT_DIR$/package-lock.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/package.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/profile/page.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/app/profile/page.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/utils/constants.ts" beforeDir="false" afterPath="$PROJECT_DIR$/app/utils/constants.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/utils/ensureProfile.ts" beforeDir="false" afterPath="$PROJECT_DIR$/app/utils/ensureProfile.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/utils/slugify.ts" beforeDir="false" afterPath="$PROJECT_DIR$/app/utils/slugify.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/utils/supabaseClient.ts" beforeDir="false" afterPath="$PROJECT_DIR$/app/utils/supabaseClient.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/supabase.sql" beforeDir="false" afterPath="$PROJECT_DIR$/supabase.sql" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -31,24 +37,24 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent"><![CDATA[{
-  "keyToString": {
-    "ModuleVcsDetector.initialDetectionPerformed": "true",
-    "RunOnceActivity.ShowReadmeOnStart": "true",
-    "RunOnceActivity.git.unshallow": "true",
-    "git-widget-placeholder": "main",
-    "js.debugger.nextJs.config.created.client": "true",
-    "js.debugger.nextJs.config.created.server": "true",
-    "last_opened_file_path": "/Users/kayalyne/Projects/App/orange-blossom-app/orange-blossom-app",
-    "node.js.detected.package.eslint": "true",
-    "node.js.detected.package.tslint": "true",
-    "node.js.selected.package.eslint": "(autodetect)",
-    "node.js.selected.package.tslint": "(autodetect)",
-    "nodejs_package_manager_path": "npm",
-    "ts.external.directory.path": "/Applications/IntelliJ IDEA.app/Contents/plugins/javascript-plugin/jsLanguageServicesImpl/external",
-    "vue.rearranger.settings.migration": "true"
+  <component name="PropertiesComponent">{
+  &quot;keyToString&quot;: {
+    &quot;ModuleVcsDetector.initialDetectionPerformed&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.git.unshallow&quot;: &quot;true&quot;,
+    &quot;git-widget-placeholder&quot;: &quot;main&quot;,
+    &quot;js.debugger.nextJs.config.created.client&quot;: &quot;true&quot;,
+    &quot;js.debugger.nextJs.config.created.server&quot;: &quot;true&quot;,
+    &quot;last_opened_file_path&quot;: &quot;/Users/kayalyne/Projects/App/orange-blossom-app/orange-blossom-app&quot;,
+    &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
+    &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
+    &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
+    &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
+    &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
+    &quot;ts.external.directory.path&quot;: &quot;/Applications/IntelliJ IDEA.app/Contents/plugins/javascript-plugin/jsLanguageServicesImpl/external&quot;,
+    &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
   }
-}]]></component>
+}</component>
   <component name="RunManager" selected="npm.Next.js: server-side">
     <configuration name="Next.js: debug client-side" type="JavascriptDebugType" uri="http://localhost:3000/">
       <method v="2" />
@@ -82,7 +88,9 @@
       <workItem from="1755105912240" duration="5131000" />
       <workItem from="1755115743342" duration="3382000" />
       <workItem from="1755189982798" duration="9304000" />
-      <workItem from="1755204675246" duration="3293000" />
+      <workItem from="1755204675246" duration="3854000" />
+      <workItem from="1755266265806" duration="613000" />
+      <workItem from="1755274192252" duration="795000" />
     </task>
     <servers />
   </component>
