@@ -9,7 +9,7 @@ See PRD file for more general details
 * NextJs
 * Github Copilot
 * ChatGPT (PRD)
-* Vercel (Deployment)
+* Vercel (Deployment) - TBD
 
 
 <img width="1143" height="610" alt="Screen Shot 2025-08-15 at 12 13 53 PM" src="https://github.com/user-attachments/assets/66f6e119-0e41-4267-9f3c-95149ed991c3" />
